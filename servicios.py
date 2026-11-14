@@ -39,6 +39,7 @@ class servicio(ABC):
     def obtener_descripccion(self) -> str:
         """ metodo abstracto obligatorio para la descricion."""
          pass
+         
 
 # servicio especializado: sala
 class ServicioSala(sala):
@@ -63,5 +64,26 @@ class ServicioSala(sala):
       def obtener_descripcion(self) -> str:
           return (f"servicio: {self._titulo} | capacidad: {self._capacidad} personas"
                   f"| horas: {self._total_horas} | costo final: $ {self.calcular_costo():,.2f}")
-                  
+
+
+# servicio especializado: equipos
+class ServicioEquipos(servicio):
+     def __init__(self, tarifa_base: float, num_equipos: int,dias_alquiler: int):
+         super().__init__("prestamo de equipos", tarifa_base)
+         if num_equipos <= 0 or dias_alquiler <= 0:
+             raise DatoIvalidoError("la cantidad de equipos y dias deben ser positivos")
+         self._num_equipos = num_equipos
+         self._dias_aquiler = dias_alquiler
+
+     def calcular_costo(self, incluir_soporte: bool = false) -> float:
+         costo_total = self._tarifa_base * self._num_equipos * self._dias_alquiler
+         if incluir_soporte:
+             costo_total += 15000 * self._num_equipos
+             return costo_total
+
+     def obtener_descripcion(self) -> str:
+         return (f"servicio: {self._titulo} | equipos: { self._num_equipos} "
+                 f"| dias: {self._dias_alquiler} | costo final: ${self.calcular_costo():,.2f}")
+
+                 
       
