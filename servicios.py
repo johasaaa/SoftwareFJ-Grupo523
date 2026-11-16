@@ -1,18 +1,6 @@
 from abc import ABC, abstractmethod
-
-# Excepcion personalizada para controlar errores especificos en los servicios
-class DatoInvalidoError(Exception):
-     """Excepcion personalizada para indicar que un dato es invalido"""
-  def __init__(self, mensaje="el dato proporcionado es invalido."):
-      self.mensaje = mensaje 
-      super().__init__(self.mensaje)
-      
-class ServicioNoDisponibleError(Exception):
-     """ Excepcion personalizada paraindicar que un servicio noestabdisponible."""
-     def __init__(self, mensaje="el servicio solicitado no esta disponible."):
-         self.mensaje = mensaje
-         super().__init__(self.mensaje)
-                  
+from excepciones import DatoInvalidoError, ServicioNoDisponibleError
+                
 
 # clase abstracta servicio (entidad base del sistema)
 class Servicio(ABC):
@@ -36,9 +24,9 @@ class Servicio(ABC):
          pass
 
     @abstractmethod
-    def obtener_descripccion(self) -> str:
-        """ metodo abstracto obligatorio para la descricion."""
-         pass
+    def obtener_descripcion(self) -> str:
+        """ metodo abstracto obligatorio para la descripcion."""
+        pass
          
 
 # Servicio especializado: sala
@@ -79,7 +67,7 @@ class ServicioEquipos(Servicio):
          costo_total = self._tarifa_base * self._num_equipos * self._dias_alquiler
          if incluir_soporte:
              costo_total += 15000 * self._num_equipos
-             return costo_total
+         return costo_total
 
      def obtener_descripcion(self) -> str:
          return (f"servicio: {self._titulo} | equipos: { self._num_equipos} "
