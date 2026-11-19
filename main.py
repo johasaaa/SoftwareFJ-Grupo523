@@ -6,21 +6,11 @@
 
 from cliente import Cliente, RegistroClientes
 
-from servicios import (
-    ServicioSala,
-    ServicioEquipos,
-    ServicioAsesoria
-)
+from servicios import (ServicioSala,ServicioEquipos,ServicioAsesoria)
 
 from reserva import Reserva
 
-from excepciones import (
-    DatoInvalidoError,
-    ClienteNoEncontradoError,
-    ServicioNoDisponibleError,
-    ReservaInvalidaError,
-    OperacionNoPermitidaError
-)
+from excepciones import (DatoInvalidoError,ClienteNoEncontradoError,ServicioNoDisponibleError,ReservaInvalidaError,OperacionNoPermitidaError)
 
 from logger import registrar_log
 
