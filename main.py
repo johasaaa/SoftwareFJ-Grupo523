@@ -1,3 +1,6 @@
+# Empresa: Software FJ - Programación (213023) - Fase 4 - Grupo 523
+# Archivo: main.py
+# Responsable: Yuri Natalia Ramirez Rodriguez 
 
 # IMPORTAR CLASES EXISTENTES DEL PROYECTO
 
