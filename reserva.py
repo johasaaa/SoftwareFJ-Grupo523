@@ -1,4 +1,4 @@
-from excepciones import (ReservaInvalidaError,OperacionNoPermitidaError,DatoInvalidoError,ServicioNoDisponibleError)
+from excepciones import (ReservaInvalidaError, OperacionNoPermitidaError, DatoInvalidoError, ServicioNoDisponibleError)
 
 from logger import registrar_log
 
@@ -12,8 +12,9 @@ class Reserva:
     reservas mediante validaciones y excepciones.
     """
 
-    ESTADOS_VALIDOS = ["Pendiente","Confirmada","Cancelada","Finalizada"]
-def __init__(self, id_reserva, cliente, servicio, duracion):
+    ESTADOS_VALIDOS = ["Pendiente", "Confirmada", "Cancelada", "Finalizada"]
+
+    def __init__(self, id_reserva, cliente, servicio, duracion):
 
         try:
             # Validar identificador
@@ -71,8 +72,8 @@ def __init__(self, id_reserva, cliente, servicio, duracion):
 
             raise ReservaInvalidaError(
                 "No fue posible crear la reserva.") from error
-    
-@property
+
+    @property
     def id(self):
         return self._id
 
@@ -96,7 +97,7 @@ def __init__(self, id_reserva, cliente, servicio, duracion):
     def costo_total(self):
         return self._costo_total
 
- def confirmar(self, descuento=0, impuesto=19):
+    def confirmar(self, descuento=0, impuesto=19):
 
         try:
             # Verificar estado de la reserva
@@ -154,8 +155,8 @@ def __init__(self, id_reserva, cliente, servicio, duracion):
             # Confirmar reserva
             self._estado = "Confirmada"
 
-        except (OperacionNoPermitidaError,ReservaInvalidaError,ServicioNoDisponibleError,DatoInvalidoError) 
-     as error:
+        except (OperacionNoPermitidaError, ReservaInvalidaError,
+                ServicioNoDisponibleError, DatoInvalidoError) as error:
 
             registrar_log(
                 "ERROR",
@@ -171,8 +172,7 @@ def __init__(self, id_reserva, cliente, servicio, duracion):
                 f"{self._id}: {error}")
 
             raise ReservaInvalidaError(
-                "Ocurrió un error inesperado al confirmar la reserva.") 
-            from error
+                "Ocurrió un error inesperado al confirmar la reserva.") from error
 
         else:
 
@@ -185,10 +185,10 @@ def __init__(self, id_reserva, cliente, servicio, duracion):
 
         finally:
 
-            registrar_log("INFO",f"Finalizó el intento de confirmación "
+            registrar_log("INFO", f"Finalizó el intento de confirmación "
                 f"de la reserva {self._id}.")
 
- def cancelar(self):
+    def cancelar(self):
 
         try:
 
@@ -207,21 +207,22 @@ def __init__(self, id_reserva, cliente, servicio, duracion):
 
         except OperacionNoPermitidaError as error:
 
-            registrar_log("ERROR",f"Error al cancelar reserva {self._id}: {error}")
+            registrar_log("ERROR", f"Error al cancelar reserva {self._id}: {error}")
 
             raise
 
         except Exception as error:
 
-            registrar_log("ERROR",f"Error inesperado al cancelar reserva: {error}")
+            registrar_log("ERROR", f"Error inesperado al cancelar reserva: {error}")
 
             raise ReservaInvalidaError("No fue posible cancelar la reserva.") from error
 
         finally:
 
-            registrar_log("INFO",f"Finalizó el intento de cancelación "
+            registrar_log("INFO", f"Finalizó el intento de cancelación "
                 f"de la reserva {self._id}.")
- def finalizar(self):
+
+    def finalizar(self):
 
         try:
 
@@ -239,7 +240,7 @@ def __init__(self, id_reserva, cliente, servicio, duracion):
 
         except OperacionNoPermitidaError as error:
 
-            registrar_log("ERROR",f"Error al finalizar reserva {self._id}: {error}")
+            registrar_log("ERROR", f"Error al finalizar reserva {self._id}: {error}")
 
             raise
 
@@ -256,9 +257,9 @@ def __init__(self, id_reserva, cliente, servicio, duracion):
                 f"Finalizó el intento de finalización "
                 f"de la reserva {self._id}.")
 
- def mostrar_info(self):
+    def mostrar_info(self):
 
-        costo = ( f"${self._costo_total:,.2f}"
+        costo = (f"${self._costo_total:,.2f}"
             if self._costo_total is not None
             else "No calculado")
 
