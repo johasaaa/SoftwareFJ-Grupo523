@@ -17,8 +17,6 @@
 # ABC y abstractmethod permiten crear clases abstractas
 from abc import ABC, abstractmethod
 
-# logging permite escribir eventos y errores en un archivo de texto
-import logging
 
 # Excepciones personalizadas del grupo (archivo excepciones.py)
 from excepciones import (
@@ -27,14 +25,9 @@ from excepciones import (
     OperacionNoPermitidaError,
 )
 
-# Configuración del archivo de logs: cada evento se guarda con
-# la fecha, la hora, el nivel (INFO o ERROR) y el mensaje.
-logging.basicConfig(
-    filename="registro_eventos.log",
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s",
-    encoding="utf-8",
-)
+# Función del grupo (logger.py) que registra eventos y errores
+# en el archivo de logs común del sistema (logs.txt)
+from logger import registrar_log
 
 
 # -----------------------------------------------------------------
@@ -187,7 +180,7 @@ class RegistroClientes:
                     f"Ya existe un cliente con el documento {cliente.documento}.")
         cliente.validar()
         self._clientes.append(cliente)
-        logging.info(f"Cliente registrado: {cliente.descripcion()}")
+        registrar_log("INFO", f"Cliente registrado: {cliente.descripcion()}")
 
     # Busca un cliente por documento. Si no existe, lanza un error.
     def buscar(self, documento):
@@ -200,7 +193,7 @@ class RegistroClientes:
     def eliminar(self, documento):
         cliente = self.buscar(documento)
         self._clientes.remove(cliente)
-        logging.info(f"Cliente eliminado: {cliente.descripcion()}")
+        registrar_log("INFO", f"Cliente eliminado: {cliente.descripcion()}")
 
     # Devuelve la lista de descripciones de todos los clientes
     def listar(self):
@@ -210,7 +203,7 @@ class RegistroClientes:
 # -----------------------------------------------------------------
 # PRUEBAS: operaciones válidas e inválidas con manejo de excepciones.
 # El programa nunca se detiene: cada error se atrapa, se muestra
-# y se guarda en el archivo registro_eventos.log
+# y se guarda en el archivo de logs del grupo
 # -----------------------------------------------------------------
 if __name__ == "__main__":
 
@@ -235,10 +228,10 @@ if __name__ == "__main__":
             registro.agregar(cliente)          # puede lanzar OperacionNoPermitidaError
         except DatoInvalidoError as error:
             print(f"  Dato inválido: {error}")
-            logging.error(f"Operación {numero} - Dato inválido: {error}")
+            registrar_log("ERROR", f"Operación {numero} - Dato inválido: {error}")
         except OperacionNoPermitidaError as error:
             print(f"  Operación no permitida: {error}")
-            logging.error(f"Operación {numero} - Operación no permitida: {error}")
+            registrar_log("ERROR", f"Operación {numero} - Operación no permitida: {error}")
         else:
             # else solo se ejecuta si NO hubo ningún error
             print(f"  Registrado correctamente -> {cliente.descripcion()}")
@@ -253,7 +246,7 @@ if __name__ == "__main__":
             encontrado = registro.buscar(documento)
         except ClienteNoEncontradoError as error:
             print(f"  {error}")
-            logging.error(f"Búsqueda fallida: {error}")
+            registrar_log("ERROR", f"Búsqueda fallida: {error}")
         else:
             print(f"  Encontrado -> {encontrado.descripcion(mostrar_contacto=True)}")
 
@@ -261,4 +254,4 @@ if __name__ == "__main__":
     print("\nClientes registrados:")
     for texto in registro.listar():
         print(f"  - {texto}")
-    print("\nLos eventos y errores quedaron guardados en registro_eventos.log")
+    print("\nLos eventos y errores quedaron guardados en el archivo de logs.")
